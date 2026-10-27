@@ -1,0 +1,17 @@
+# Local/demo stack: docker compose up --build   ->  http://localhost:5000  (fresh empty database, setup screen first)
+# Set JWT_SECRET (and AI_API_KEY if you want the AI features) in your shell or a .env file next to this file.
+services:
+  mongo:
+    image: mongo:7
+    volumes: [mongo-data:/data/db]
+  app:
+    build: .
+    ports: ["5000:5000"]
+    depends_on: [mongo]
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/hcm_lite
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET to a long random string}
+      CLIENT_ORIGIN: http://localhost:5000
+      AI_API_KEY: ${AI_API_KEY:-}
+volumes:
+  mongo-data:
