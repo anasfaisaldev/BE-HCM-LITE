@@ -18,6 +18,7 @@ export function createApp() {
   app.use(express.json({ limit: '100kb' }));
   app.use(cookieParser());
   if (env.nodeEnv !== 'test') app.use(morgan('tiny'));
+  app.get('/', (_req, res) => res.json({ success: true, message: 'HCM Lite API is running' }));
   app.use('/api', routes);
   if (env.serveFrontend && fs.existsSync(env.serveFrontend)) {
     app.use(express.static(env.serveFrontend)); // single-origin deploy: cookies work with no CORS/proxy setup
